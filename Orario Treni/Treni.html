@@ -17,32 +17,38 @@
       <input type="text" class="form-control" id="username" placeholder="Enter username">
       <label for="password" class="form-label">Password:</label><br>
       <input type="password" class="form-control" id="password" placeholder="Enter password"><br>
-      <button type="button" class="btn" id="b_login">Login</button>
+      <button type="button" class="btn btn-primary" id="b_login">Login</button>
       <div id="text" class="mt-4 d-none alert alert-danger"></div>
     </form>
   </div>
   <div id="div_crea" class="d-none container text-center"> 
     <form class=" form">
       <h3>Creazione Tratte</h3>
-      <button type="button" class="btn" id="change">Pagina cercaggio</button><br>
+      <button type="button" class="btn btn-primary" id="change">Pagina ricerca</button><br>
       <label for="StazioneP" class="form-label">Stazione di partenza:</label><br>
       <input type="text" class="form-control" id="StazioneP" placeholder="Partenza">
       <label for="StazioneA" class="form-label">Stazione di arrivo:</label><br>
       <input type="text" class="form-control" id="StazioneA" placeholder="Arrivo"><br>
-      <label for="Durata" class="form-label">Durata viaggio:</label><br>
-      <input type="text" class="form-control" id="Durata" placeholder="Durata"><br>
-      <button type="button" class="btn" id="CreaT">Crea</button>
+      <label for="Durata" class="form-label">Durata viaggio(in minuti):</label><br>
+      <input type="number" class="form-control" id="Durata" placeholder="Durata"><br>
+      <label for="Prima partenza" class="form-label">Orario prima partenza:</label><br>
+      <input type="time" class="form-control" id="Prima_partenza" placeholder="Prima partenza"><br>
+      <label for="Ripetizione" class="form-label">Ogni quanto parte (in minuti):</label><br>
+      <input type="number" class="form-control" id="Ripetizione" placeholder="Minuti"><br>
+      <label for="Numero ripetizioni" class="form-label">Quanto si ripete al giorno:</label><br>
+      <input type="number" class="form-control" id="Numero_ripetizioni" placeholder="Numero ripetizioni"><br>
+      <button type="button" class="btn btn-primary" id="CreaT">Crea</button>
     </form>
   </div>
   <div id="div_cerca" class="d-none container text-center"> 
     <form class=" form">
       <h3>Cerca Tratte</h3>
-      <button type="button" class="btn" id="change2">Pagina creaggio</button><br>
+      <button type="button" class="btn btn-primary" id="change2">Pagina creazione</button><br>
       <label for="StazionePC" class="form-label">Stazione di partenza:</label><br>
       <input type="text" class="form-control" id="StazionePC" placeholder="Partenza">
       <label for="StazioneAC" class="form-label">Stazione di arrivo:</label><br>
       <input type="text" class="form-control" id="StazioneAC" placeholder="Arrivo"><br>
-      <button type="button" class="btn" id="CercaT">Cerca</button>
+      <button type="button" class="btn btn-primary" id="CercaT">Cerca</button>
     </form>
   </div>
   <div id="div_tab" class="d-none container text-center"></div>
