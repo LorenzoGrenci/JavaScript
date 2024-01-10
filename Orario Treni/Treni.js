@@ -9,14 +9,18 @@ const button_change = document.getElementById("change");
 const stazioneP = document.getElementById("StazioneP");
 const stazioneA = document.getElementById("StazioneA");
 const durata = document.getElementById("Durata");
+const prima_par = document.getElementById("Prima_partenza");
+const ripetizione = document.getElementById("Ripetizione");
+const n_rip = document.getElementById("Numero_ripetizioni");
 const button_crea = document.getElementById("CreaT");
 const div_cerca = document.getElementById("div_cerca");
 const button_change2 = document.getElementById("change2");
 const stazionePC = document.getElementById("StazionePC");
 const stazioneAC = document.getElementById("StazioneAC");
 const button_cerca = document.getElementById("CercaT");
-let div_tab = document.getElementById("div_tab")
+const div_tab = document.getElementById("div_tab")
 let lista_Tratte=[];
+
 
 function login(callback, token, username, password) {
   fetch("https://ws.progettimolinari.it/credential/login",
@@ -51,7 +55,7 @@ function get(token) {
   })
 }
 
-function set(token, stazioneP, stazioneA, durata) {
+function set(token, content) {
   fetch("https://ws.progettimolinari.it/cache/set",
     {
       method: "POST",
@@ -61,7 +65,7 @@ function set(token, stazioneP, stazioneA, durata) {
       },
       body: JSON.stringify({
         key: "Tratta",
-        value: {stazioneP, stazioneA, durata}
+        value: JSON.stringify(content)
       })
     }).then((response) => {
       response.json().then(console.log("ok"));
@@ -71,7 +75,6 @@ function set(token, stazioneP, stazioneA, durata) {
 function callback2(content) {
   console.log(content);
   lista_Tratte = JSON.parse(content.result);
-  render();
 }
 
 function callback(content) { 
@@ -81,6 +84,7 @@ function callback(content) {
     div_login.classList.add("d-none");     
     div_crea.classList.remove("d-none"); 
     div_crea.classList.add("d-block"); 
+    get(token)
   }
   else {
     text.classList.remove("d-none"); 
@@ -100,29 +104,20 @@ button_login.onclick = () => {
 }
 
 let template = `
-<div class="row">
- <div class="col"></div>
- <div class="col-6 text-center centro">
-<div class="card border-success mb-3" style="max-width: 540px;">
-<div class="row g-0">
-  <table>
-    <tr><th>Stazione Partenza<th><th>Stazione Arrivo<th><th>Durata<th>
-    <tr><td>%StazionePC</td><td>%StazioneAC</td><td>%Durata</td></tr>
-  </table>
-</div>
-</div>
-</div>
- <div class="col"></div>
- </div>`;
+  <table class="table">
+    <tr><th>Stazione Partenza</th><th>Stazione Arrivo</th><th>Durata</th><th>Prima Partenza</th><th>Ogni quanto</th><th>Numero ripetizioni</th>
+    <tr><td>%StazionePC</td><td>%StazioneAC</td><td>%Durata</td><td>%Primapartenza</td><td>%Ripetizione</td><td>%N_rip</td></tr>
+  </table>`;
   
 function render() {
   console.log(lista_Tratte)
   let html = ``;
   let found=false;
   lista_Tratte.forEach((element) => {
-    if (element.stazioneP == stazionePC.value && element.stazioneA == stazioneAC.value){
-      html += template.replace("%StazionePC", element.stazioneP).replace("%StazioneAC", element.stazioneA).replace("%Durata", element.durata)
-      console.log("controllo ok")
+    console.log(element)
+    if (element["partenza"] == stazionePC.value && element["arrivo"] == stazioneAC.value){
+      html += template.replace("%StazionePC", element["partenza"]).replace("%StazioneAC", element["arrivo"]).replace("%Durata", element["durata"])
+      .replace("%Primapartenza", element["primapartenza"]).replace("%Ripetizione", element["ripetizione"]).replace("%N_rip", element["n_rip"])
       found=true;
     } 
   })
@@ -135,18 +130,24 @@ function render() {
 }
 
 button_cerca.onclick=()=>{
-  get(token);
+  get(token)
+  render();
 }
 
 button_crea.onclick=()=>{
-  set(token, stazioneP.value, stazioneA.value, durata.value)
+  let tratta={"partenza": stazioneP.value, "arrivo": stazioneA.value, "durata": durata.value,
+              "primapartenza": prima_par.value, "ripetizione": ripetizione.value, "n_rip": n_rip.value }
+  lista_Tratte.push(tratta)
+  set(token, lista_Tratte)
 }
 
 button_change.onclick=()=>{
   div_crea.classList.remove("d-block"); 
   div_crea.classList.add("d-none");     
   div_cerca.classList.remove("d-none"); 
-  div_cerca.classList.add("d-block"); 
+  div_cerca.classList.add("d-block");
+  div_tab.classList.remove("d-none"); 
+  div_tab.classList.add("d-block");
 }
 
 button_change2.onclick=()=>{
@@ -154,4 +155,6 @@ button_change2.onclick=()=>{
   div_cerca.classList.add("d-none");     
   div_crea.classList.remove("d-none"); 
   div_crea.classList.add("d-block"); 
+  div_tab.classList.remove("d-block"); 
+  div_tab.classList.add("d-none");
 }
